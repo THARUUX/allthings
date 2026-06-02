@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-
+import { getBaseUrl } from '@/lib/url';
 
 export default function robots(): MetadataRoute.Robots {
   // Use safe helper to ensure protocol
