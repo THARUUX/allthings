@@ -1,0 +1,109 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider     = "mysql"
+  relationMode = "prisma"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+}
+
+enum ArticleStatus {
+  DRAFT
+  PENDING_REVIEW
+  PUBLISHED
+  REJECTED
+}
+
+model User {
+  id           String     @id @default(uuid())
+  name         String
+  email        String     @unique
+  passwordHash String
+  role         Role       @default(USER)
+  status       UserStatus @default(ACTIVE)
+  bio          String?    @db.Text
+  avatar       String?    @db.Text
+  articles     Article[]
+  comments     Comment[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([email])
+}
+
+model Article {
+  id           String        @id @default(uuid())
+  title        String
+  slug         String        @unique
+  content      String        @db.LongText
+  summary      String        @db.Text
+  coverImage   String?       @db.Text
+  status       ArticleStatus @default(DRAFT)
+  views        Int           @default(0)
+  readTime     Int           @default(1) // in minutes
+  authorId     String
+  author       User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  categoryId   String
+  category     Category      @relation(fields: [categoryId], references: [id])
+  tags         Tag[]
+  comments     Comment[]
+  rejectReason String?       @db.Text
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([authorId])
+  @@index([categoryId])
+  @@index([slug])
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?   @db.Text
+  articles    Article[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([slug])
+}
+
+model Tag {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  slug      String    @unique
+  articles  Article[]
+  createdAt DateTime  @default(now())
+
+  @@index([slug])
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String   @db.Text
+  articleId String
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([articleId])
+  @@index([userId])
+}
+
+model Setting {
+  key   String @id
+  value String @db.Text
+}
