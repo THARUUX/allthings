@@ -4,7 +4,9 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_PLATFORM_URL || "https://allthings.com";
+  // Use safe helper to ensure protocol
+import { getBaseUrl } from '@/lib/url';
+const baseUrl = getBaseUrl().toString();
 
   let articleUrls: any[] = [];
   try {

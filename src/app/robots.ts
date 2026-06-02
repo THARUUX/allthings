@@ -1,7 +1,9 @@
 import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_PLATFORM_URL || "https://allthings.com";
+  // Use safe helper to ensure protocol
+import { getBaseUrl } from '@/lib/url';
+const baseUrl = getBaseUrl().toString();
 
   return {
     rules: [
