@@ -1,8 +1,17 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+function buildMetadataBase() {
+  const raw = process.env.NEXT_PUBLIC_PLATFORM_URL || "https://allthings.com";
+  // Ensure the URL always has a protocol so `new URL()` doesn't throw
+  const url = raw.startsWith("http://") || raw.startsWith("https://")
+    ? raw
+    : `https://${raw}`;
+  return new URL(url);
+}
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_PLATFORM_URL || "https://allthings.com"),
+  metadataBase: buildMetadataBase(),
   title: {
     default: "ALLTHINGS — Earn With Ads | Ad Network Platform",
     template: "%s | ALLTHINGS",
