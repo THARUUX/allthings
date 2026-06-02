@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
@@ -12,6 +13,8 @@ import {
   Settings,
   LogOut,
   FolderOpen,
+  Menu,
+  X,
 } from "lucide-react";
 import { Role } from "@/types";
 
@@ -37,6 +40,7 @@ const adminLinks = [
 
 export default function Sidebar({ role, userName, userEmail }: SidebarProps) {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
 
   const renderNavSection = (title: string, items: typeof writerLinks) => {
     return (
@@ -53,6 +57,7 @@ export default function Sidebar({ role, userName, userEmail }: SidebarProps) {
               key={href}
               href={href}
               className={`sidebar-link ${isActive ? "active" : ""}`}
+              onClick={() => setIsOpen(false)}
             >
               <Icon size={17} />
               {label}
@@ -64,15 +69,32 @@ export default function Sidebar({ role, userName, userEmail }: SidebarProps) {
   };
 
   return (
-    <aside className="sidebar">
-      <Link href="/" className="sidebar-logo" style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
-        <img
-          src="/logo.svg"
-          alt="ALLTHINGS Logo"
-          style={{ width: 28, height: 28, borderRadius: "6px", objectFit: "contain" }}
-        />
-        <span className="sidebar-logo-text">ALLTHINGS</span>
-      </Link>
+    <aside className={`sidebar ${isOpen ? "open" : ""}`}>
+      <div className="sidebar-logo-container" style={{ display: "flex", width: "100%", justifyContent: "space-between", alignItems: "center" }}>
+        <Link href="/" className="sidebar-logo" style={{ display: "flex", alignItems: "center", gap: "0.625rem", borderBottom: "none", flexGrow: 1 }}>
+          <img
+            src="/logo.svg"
+            alt="ALLTHINGS Logo"
+            style={{ width: 28, height: 28, borderRadius: "6px", objectFit: "contain" }}
+          />
+          <span className="sidebar-logo-text">ALLTHINGS</span>
+        </Link>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="sidebar-toggle-btn"
+          style={{
+            display: "none",
+            background: "none",
+            border: "none",
+            color: "var(--color-text)",
+            cursor: "pointer",
+            padding: "0.5rem 1.25rem",
+          }}
+          aria-label="Toggle Sidebar"
+        >
+          {isOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </div>
 
       <nav className="sidebar-nav" style={{ gap: 0, overflowY: "auto" }}>
         {role === "ADMIN" && renderNavSection("Admin Panel", adminLinks)}
