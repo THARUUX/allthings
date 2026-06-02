@@ -1,11 +1,11 @@
 import { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
-
+import { getBaseUrl } from '@/lib/url';
 export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Use safe helper to ensure protocol
-import { getBaseUrl } from '@/lib/url';
+
 const baseUrl = getBaseUrl().toString();
 
   let articleUrls: any[] = [];
