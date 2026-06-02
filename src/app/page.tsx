@@ -83,7 +83,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
         userName={session?.user?.name || ""}
       />
 
-      <main className="min-h-screen bg-bg pb-20 pt-[92px]">
+      <main className="min-h-screen bg-bg pb-20 pt-[76px] sm:pt-[92px]">
         {/* Top Banner Ad Container */}
         {bannerAdScript && (
           <div 
@@ -93,17 +93,17 @@ export default async function HomePage({ searchParams }: HomeProps) {
         )}
 
         {/* Hero Area */}
-        <section className="relative pt-16 px-8 pb-20 text-start justify-start overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
-          <div className="max-w-[1200px] mx-auto px-8 relative">
-            <h1 className="text-[clamp(2.25rem,5vw,3.5rem)] font-extrabold tracking-tight leading-[1.1] mb-4">
+        <section className="relative pt-10 sm:pt-16 px-4 sm:px-8 pb-14 sm:pb-20 overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
+          <div className="max-w-[1200px] mx-auto relative">
+            <h1 className="text-[clamp(1.75rem,5vw,3.5rem)] font-extrabold tracking-tight leading-[1.1] mb-4">
               Explore <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Unlimited Knowledge</span>
             </h1>
-            <p className="text-muted text-lg leading-relaxed max-w-[580px]  mb-10">
+            <p className="text-muted text-base sm:text-lg leading-relaxed max-w-[580px] mb-8 sm:mb-10">
               Read standard stories, tutorials, and insights across technology, marketing, design, and passive income.
             </p>
 
             {/* Search Box */}
-            <form action="/" method="GET" className="max-w-[580px]  flex gap-2 relative">
+            <form action="/" method="GET" className="max-w-[580px] flex flex-col sm:flex-row gap-2 relative">
               {catSlug && <input type="hidden" name="category" value={catSlug} />}
               <div className="relative flex-1">
                 <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-subtle" />
@@ -115,14 +115,14 @@ export default async function HomePage({ searchParams }: HomeProps) {
                   placeholder="Search topic or article..."
                 />
               </div>
-              <button type="submit" className="px-7 h-12 rounded-full text-white bg-gradient-to-r from-primary to-accent hover:opacity-90 font-semibold cursor-pointer shadow-md hover:shadow-lg transition-all duration-200">
+              <button type="submit" className="h-12 px-7 rounded-full text-white bg-gradient-to-r from-primary to-accent hover:opacity-90 font-semibold cursor-pointer shadow-md hover:shadow-lg transition-all duration-200">
                 Search
               </button>
             </form>
           </div>
         </section>
 
-        <div className="max-w-[1200px] mx-auto px-8">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
           {/* Trending Section (only show when not searching) */}
           {!q && !catSlug && trendingArticles.length > 0 && (
             <section className="mb-16">
@@ -131,7 +131,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
                 <h2 className="text-xl font-extrabold text-text">Trending Stories</h2>
               </div>
 
-              <div className="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {trendingArticles.map((article) => (
                   <div key={article.id} className="flex flex-col justify-between h-full p-6 bg-surface border border-border rounded-xl hover:border-border-hover hover:-translate-y-0.5 hover:shadow-[0_12px_24px_-10px_rgba(0,0,0,0.4)] shadow-[0_4px_20px_-2px_rgba(99,102,241,0.1)] transition-all duration-200">
                     <div>
@@ -160,11 +160,34 @@ export default async function HomePage({ searchParams }: HomeProps) {
             </section>
           )}
 
-          {/* Directory Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-12 items-start">
-            
-            {/* Sidebar Topics */}
-            <aside className="sticky top-24">
+          {/* Mobile: horizontal scrollable category pills */}
+          <div className="md:hidden flex gap-2 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-none mb-8">
+            <Link
+              href={q ? `/?q=${q}` : "/"}
+              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 no-underline ${
+                !catSlug ? "text-white bg-gradient-to-r from-primary to-accent" : "text-muted bg-surface-2 hover:bg-surface-3"
+              }`}
+            >
+              All Topics
+            </Link>
+            {categories.map((cat) => (
+              <Link
+                key={cat.id}
+                href={q ? `/?category=${cat.slug}&q=${q}` : `/?category=${cat.slug}`}
+                className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 no-underline ${
+                  catSlug === cat.slug ? "text-white bg-gradient-to-r from-primary to-accent" : "text-muted bg-surface-2 hover:bg-surface-3"
+                }`}
+              >
+                {cat.name}
+              </Link>
+            ))}
+          </div>
+
+          {/* Desktop: sidebar + articles grid */}
+          <div className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-8 md:gap-12 items-start">
+
+            {/* Sidebar Topics — desktop only */}
+            <aside className="hidden md:block sticky top-28">
               <h2 className="text-xs font-extrabold uppercase text-subtle tracking-wider mb-4">
                 Topics
               </h2>
@@ -227,7 +250,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
               {articles.length === 0 ? (
                 <div className="flex flex-col items-center text-center p-16 bg-surface border border-border rounded-xl">
                   <p className="text-lg font-bold text-text mb-1">No articles found</p>
-                  <p className="text-sm text-muted mb-4">We couldn't find any published articles matching your criteria.</p>
+                  <p className="text-sm text-muted mb-4">We couldn&apos;t find any published articles matching your criteria.</p>
                   <Link href="/" className="inline-flex items-center justify-center text-xs font-semibold px-4 py-2 rounded-lg bg-surface-2 border border-border text-muted hover:text-text hover:border-border-hover no-underline transition-all duration-200">
                     Clear Filters
                   </Link>
@@ -235,7 +258,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
               ) : (
                 <div className="flex flex-col gap-6">
                   {articles.map((article) => (
-                    <article key={article.id} className="p-6 bg-surface border border-border rounded-xl hover:border-border-hover hover:-translate-y-0.5 hover:shadow-[0_12px_24px_-10px_rgba(0,0,0,0.4)] transition-all duration-200">
+                    <article key={article.id} className="p-5 sm:p-6 bg-surface border border-border rounded-xl hover:border-border-hover hover:-translate-y-0.5 hover:shadow-[0_12px_24px_-10px_rgba(0,0,0,0.4)] transition-all duration-200">
                       <div>
                         <div className="flex items-center gap-3 mb-3">
                           <Link href={`/?category=${article.category.slug}`} className="no-underline">
@@ -248,7 +271,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
                           </span>
                         </div>
 
-                        <h3 className="text-xl font-bold leading-snug mb-2">
+                        <h3 className="text-lg sm:text-xl font-bold leading-snug mb-2">
                           <Link href={`/posts/${article.slug}`} className="text-text hover:text-primary no-underline transition-all duration-200">
                             {article.title}
                           </Link>

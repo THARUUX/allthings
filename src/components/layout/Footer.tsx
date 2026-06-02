@@ -26,14 +26,7 @@ export default function Footer() {
       }}
     >
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "2fr 1fr 1fr 1fr",
-            gap: "3rem",
-            marginBottom: "3rem",
-          }}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] gap-8 md:gap-12 mb-12">
           {/* Brand */}
           <div>
             <Link href="/" className="navbar-logo" style={{ marginBottom: "1rem", display: "inline-flex", alignItems: "center", gap: "0.625rem" }}>
@@ -86,12 +79,10 @@ export default function Footer() {
         </div>
 
         <div
+          className="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left"
           style={{
             borderTop: "1px solid var(--color-border)",
             paddingTop: "1.5rem",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
           }}
         >
           <p style={{ fontSize: "0.8125rem", color: "var(--color-text-subtle)" }}>

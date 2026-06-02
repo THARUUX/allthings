@@ -132,7 +132,7 @@ export default async function PostPage({ params }: PostPageProps) {
         userName={session?.user?.name || ""}
       />
 
-      <main className="min-h-screen bg-bg px-8 pt-[92px] pb-20">
+      <main className="min-h-screen bg-bg px-4 sm:px-8 pt-[76px] sm:pt-[92px] pb-20">
         <div className="max-w-[1100px] mx-auto">
           
           {/* Back button */}
