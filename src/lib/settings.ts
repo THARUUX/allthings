@@ -19,6 +19,7 @@ export async function getAdsterraSettings(): Promise<Record<string, string>> {
     "adsterra_banner_300x250",
     "adsterra_native_ad",
     "adsterra_social_bar",
+    "adsterra_direct_link",
   ];
   
   try {

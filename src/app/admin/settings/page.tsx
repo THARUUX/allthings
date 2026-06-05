@@ -20,6 +20,7 @@ export default async function AdminSettingsPage() {
     adsterra_banner_300x250: "",
     adsterra_native_ad: "",
     adsterra_social_bar: "",
+    adsterra_direct_link: "",
   };
 
   settingsList.forEach((s) => {

@@ -167,6 +167,20 @@ export default function SettingsForm({ initialSettings }: SettingsFormProps) {
               onChange={(e) => setForm({ ...form, adsterra_native_ad: e.target.value })}
             />
           </div>
+
+          <div className="form-group">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+              <label className="label">Direct Link URL</label>
+              <span style={{ fontSize: "0.75rem", color: "var(--color-text-subtle)" }}>Monetize clicks on cover images & CTA cards</span>
+            </div>
+            <input
+              type="text"
+              className="input"
+              placeholder="https://example.com/direct-link-url"
+              value={form.adsterra_direct_link || ""}
+              onChange={(e) => setForm({ ...form, adsterra_direct_link: e.target.value })}
+            />
+          </div>
         </div>
       </div>
 

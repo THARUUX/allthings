@@ -6,6 +6,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Search, Flame, Clock, BookOpen, ChevronRight, PenTool } from "lucide-react";
 import { getSetting } from "@/lib/settings";
+import AdScriptExecutor from "@/components/ads/AdScriptExecutor";
 
 export const dynamic = "force-dynamic";
 
@@ -86,10 +87,9 @@ export default async function HomePage({ searchParams }: HomeProps) {
       <main className="min-h-screen bg-bg pb-20 pt-[76px] sm:pt-[92px]">
         {/* Top Banner Ad Container */}
         {bannerAdScript && (
-          <div 
-            className="w-full flex justify-center py-4 pb-8 bg-bg"
-            dangerouslySetInnerHTML={{ __html: bannerAdScript }}
-          />
+          <div className="w-full flex justify-center py-4 pb-8 bg-bg">
+            <AdScriptExecutor html={bannerAdScript} />
+          </div>
         )}
 
         {/* Hero Area */}

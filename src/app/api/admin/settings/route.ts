@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       });
     });
 
-    await prisma.$transaction(updates);
+    await Promise.all(updates);
 
     return NextResponse.json({ success: true });
   } catch (error) {

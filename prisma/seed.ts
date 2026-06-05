@@ -75,6 +75,7 @@ async function main() {
     { key: "adsterra_banner_300x250", value: "<!-- Adsterra Banner 300x250 Script Placeholder -->" },
     { key: "adsterra_native_ad", value: "<!-- Adsterra Native Ad Script Placeholder -->" },
     { key: "adsterra_social_bar", value: "<!-- Adsterra Social Bar Script Placeholder -->" },
+    { key: "adsterra_direct_link", value: "" },
   ];
 
   for (const setting of defaultSettings) {

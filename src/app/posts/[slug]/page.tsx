@@ -8,6 +8,7 @@ import { parseMarkdownToHtml } from "@/lib/markdown";
 import { ArrowLeft, Clock, BookOpen, User, Folder, Edit } from "lucide-react";
 import { getSetting, getAdsterraSettings } from "@/lib/settings";
 import { auth } from "@/lib/auth";
+import AdScriptExecutor from "@/components/ads/AdScriptExecutor";
 
 export const dynamic = "force-dynamic";
 
@@ -113,10 +114,10 @@ export default async function PostPage({ params }: PostPageProps) {
     <>
       {/* Inject Popunder and Social Bar ad scripts from Adsterra */}
       {adCodes.adsterra_popunder && (
-        <div dangerouslySetInnerHTML={{ __html: adCodes.adsterra_popunder }} />
+        <AdScriptExecutor html={adCodes.adsterra_popunder} />
       )}
       {adCodes.adsterra_social_bar && (
-        <div dangerouslySetInnerHTML={{ __html: adCodes.adsterra_social_bar }} />
+        <AdScriptExecutor html={adCodes.adsterra_social_bar} />
       )}
 
       <script
@@ -147,10 +148,9 @@ export default async function PostPage({ params }: PostPageProps) {
 
           {/* Top Leaderboard Adsterra Banner */}
           {adCodes.adsterra_banner_728x90 && (
-            <div
-              className="w-full flex justify-center mb-10 overflow-hidden"
-              dangerouslySetInnerHTML={{ __html: adCodes.adsterra_banner_728x90 }}
-            />
+            <div className="w-full flex justify-center mb-10 overflow-hidden">
+              <AdScriptExecutor html={adCodes.adsterra_banner_728x90} />
+            </div>
           )}
 
           {/* Article Header info */}
@@ -201,11 +201,26 @@ export default async function PostPage({ params }: PostPageProps) {
               {/* Optional Cover Image */}
               {article.coverImage && (
                 <div className="mb-8 rounded-2xl overflow-hidden border border-border">
-                  <img
-                    src={article.coverImage}
-                    alt={article.title}
-                    className="w-full h-auto max-h-[440px] object-cover block"
-                  />
+                  {adCodes.adsterra_direct_link ? (
+                    <a
+                      href={adCodes.adsterra_direct_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block group overflow-hidden"
+                    >
+                      <img
+                        src={article.coverImage}
+                        alt={article.title}
+                        className="w-full h-auto max-h-[440px] object-cover block transition-transform duration-300 group-hover:scale-[1.01]"
+                      />
+                    </a>
+                  ) : (
+                    <img
+                      src={article.coverImage}
+                      alt={article.title}
+                      className="w-full h-auto max-h-[440px] object-cover block"
+                    />
+                  )}
                 </div>
               )}
 
@@ -237,7 +252,7 @@ export default async function PostPage({ params }: PostPageProps) {
                   <h4 className="text-xs uppercase text-subtle tracking-wider mb-3 font-bold">
                     Sponsored Stories
                   </h4>
-                  <div dangerouslySetInnerHTML={{ __html: adCodes.adsterra_native_ad }} />
+                  <AdScriptExecutor html={adCodes.adsterra_native_ad} />
                 </div>
               )}
 
@@ -263,11 +278,32 @@ export default async function PostPage({ params }: PostPageProps) {
                   <h4 className="text-xs uppercase text-subtle tracking-wider mb-3 text-center font-bold">
                     Advertisement
                   </h4>
-                  <div
-                    className="w-[300px] h-[250px] bg-surface border border-border flex items-center justify-center rounded-lg overflow-hidden"
-                    dangerouslySetInnerHTML={{ __html: adCodes.adsterra_banner_300x250 }}
-                  />
+                  <div className="w-[300px] h-[250px] bg-surface border border-border flex items-center justify-center rounded-lg overflow-hidden">
+                    <AdScriptExecutor html={adCodes.adsterra_banner_300x250} />
+                  </div>
                 </div>
+              )}
+
+              {adCodes.adsterra_direct_link && (
+                <a
+                  href={adCodes.adsterra_direct_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block p-5 rounded-xl no-underline transition-all duration-300 border border-primary/20 hover:border-primary/50 hover:shadow-[0_4px_20px_rgba(99,102,241,0.15)]"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(168,85,247,0.08) 100%)",
+                  }}
+                >
+                  <h4 className="text-sm font-bold mb-1.5 text-text flex items-center gap-1.5">
+                    🔥 Recommended Offer
+                  </h4>
+                  <p className="text-xs text-muted leading-relaxed mb-3">
+                    Check out today&apos;s special sponsored deals and exclusive passive income opportunities.
+                  </p>
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary-light hover:text-primary transition-colors duration-200">
+                    Learn More &rarr;
+                  </span>
+                </a>
               )}
 
               <div className="p-5 bg-surface border border-border rounded-xl">
